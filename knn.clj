@@ -10,9 +10,13 @@
 	"Calculates distance between 2 vectors. The higher the result, the more different the vectors."
 	(/ (count (filter #(= false %) (map = v1 v2))) (count v1)))
 
+(defn count-occurences [v]
+	"Counts occurences in a vector"
+	(partition 2 (interleave  (set v) (map #(count (filter #{%} v)) (set v)))))
+
 (defn majority-vote [v]
 	"Calculates which item appears most often in a vector. CAUTION: in case two items appear equally often, will pick at random"
-	(first (last (sort-by second (partition 2 (interleave  (set v) (map #(count (filter #{%} v)) (set v))))))))
+	(first (last (sort-by second (count-occurences v)))))
 
 (defn classify [sample training-set k]
 	(let [distances (pmap #(calculate-distance (:pattern %) sample) training-set)
