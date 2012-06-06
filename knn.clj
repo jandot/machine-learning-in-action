@@ -27,4 +27,4 @@
 (def sample-numbers (map int (take 100 (repeatedly #(rand 946)))))
 (def sample-test-set (map #(nth test-set %) sample-numbers))
 (def predictions (pmap #(classify (:pattern %) training-set 3) sample-test-set))
-(partition 2 (interleave (map :label sample-test-set) predictions))
+(println (partition 2 (interleave (map :label sample-test-set) predictions)))
