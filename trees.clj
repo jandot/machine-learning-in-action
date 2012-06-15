@@ -88,6 +88,7 @@
 
 (defn id3
 	([m]
+	"Should return something like {:not-surfacing {1 {:flippers {1 \"fish\", 0 \"not-fish\"}}, 0 \"not-fish\"}}"
 		(id3 m {}))
 	([m t]
 		(if (leaf-reached m)
@@ -96,6 +97,20 @@
 				  values-for-feature (set (map feature-to-split m))]
 				{feature-to-split (apply assoc {} (interleave values-for-feature (map #(id3 (subset m feature-to-split %) t) values-for-feature)))}))))
 
+(def create-tree id3) ; alias for id3
+
+(defn classify [m t]
+	"Classifies a map (e.g. {:flippers 0 :not-surfacing 1}) given a pre-calculated decision tree.
+	 Decision tree looks like this: {:not-surfacing {1 {:flippers {1 \"fish\", 0 \"not-fish\"}}, 0 \"not-fish\"}}"
+	(if (map? t)
+		(let [f (first (keys t))
+			  v (get m f)]
+			(classify m (get (get t f) v)))
+		t))
+
 (clojure.pprint/pprint (id3 data))
 (clojure.pprint/pprint (id3 play-tennis))
 (clojure.pprint/pprint (id3 test-data))
+(def to-classify {:not-surfacing 1 :flippers 1})
+(def saved-tree {:not-surfacing {1 {:flippers {1 "fish", 0 "not-fish"}}, 0 "not-fish"}})
+(println (classify to-classify saved-tree))
