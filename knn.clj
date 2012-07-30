@@ -1,7 +1,6 @@
 (ns knn)
 (use '[leiningen.exec :only (deps)])
 (deps '[[org.clojure/math.numeric-tower "0.0.1"]])
-(use '[clojure.math.numeric-tower])
 
 (load-file "machinelearninginaction/Ch02/trainingDigits/training-set.clj")
 (load-file "machinelearninginaction/Ch02/testDigits/test-set.clj")
